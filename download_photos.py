@@ -44,10 +44,14 @@ def jprint(json_obj):
     print(text)
 
 
+def format_filename(file_url):
+    return file_url.rsplit('/', 1)[1]
+
+
 def download_file(directory_name, file_url):
     photo_dir = 'kobo_photos'
     # https://www.codementor.io/aviaryan/downloading-files-from-urls-in-python-77q3bs0un
-    filename = file_url.rsplit('/', 1)[1]
+    filename = format_filename(file_url)
     response = requests.get(url, headers={'Authorization': 'TOKEN ' + token})
 
     if not os.path.exists(photo_dir):
@@ -96,6 +100,7 @@ with open('kobo_photos.csv', 'wt') as f:
             for photo in photos:
                 url = f'{media_url}{photo["filename"]}'
                 path = download_file(directory, url)
+                file = format_filename(photo["filename"])
                 dim = find_image_dimensions(path)
 
                 row = [
