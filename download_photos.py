@@ -3,7 +3,7 @@ import json
 import os
 import csv
 from PIL import Image
-from settings import token, kobo_api, media_url
+from settings import kobo_token, kobo_api, media_url
 
 # ====================================
 # methods
@@ -13,7 +13,7 @@ from settings import token, kobo_api, media_url
 def fetch_projects():
     response = requests.get(
         kobo_api,
-        headers={'Authorization': 'TOKEN ' + token},
+        headers={'Authorization': 'TOKEN ' + kobo_token},
         params={'format': 'json'}
     )
 
@@ -27,7 +27,7 @@ def fetch_projects():
 def fetch_submissions(project_url):
     response = requests.get(
         project_url,
-        headers={'Authorization': 'TOKEN ' + token},
+        headers={'Authorization': 'TOKEN ' + kobo_token},
         params={'format': 'json'}
     )
 
@@ -52,7 +52,8 @@ def download_file(directory_name, file_url):
     photo_dir = 'kobo_photos'
     # https://www.codementor.io/aviaryan/downloading-files-from-urls-in-python-77q3bs0un
     filename = format_filename(file_url)
-    response = requests.get(url, headers={'Authorization': 'TOKEN ' + token})
+    response = requests.get(
+        url, headers={'Authorization': 'TOKEN ' + kobo_token})
 
     if not os.path.exists(photo_dir):
         os.mkdir(photo_dir)
